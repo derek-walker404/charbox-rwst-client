@@ -7,6 +7,7 @@ import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpMethodBase;
 
 import com.pofof.conmon.model.TestCase;
+import com.pofof.conmon.model.TimerResult;
 
 public abstract class AssetTimer<HttpMethodT extends HttpMethodBase> {
 

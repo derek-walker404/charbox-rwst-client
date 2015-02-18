@@ -1,48 +1,63 @@
 package com.tpofof.conmon.client.timer;
 
 import java.util.Collections;
-import java.util.Date;
 import java.util.List;
-import java.util.logging.Logger;
 
 import org.quartz.Job;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 
 import com.google.common.collect.Lists;
+import com.pofof.conmon.model.Device;
+import com.pofof.conmon.model.DeviceConfiguration;
 import com.pofof.conmon.model.TestCase;
-import com.tpofof.conmon.client.ConmonConfig;
+import com.pofof.conmon.model.TimerResult;
+import com.tpofof.conmon.client.config.DeviceManager;
 
 public class TestCaseRunner implements Job {
 	
-	private static final Logger log = Logger.getLogger("TestCaseRunner");
-	
-	private ConmonConfig config = ConmonConfig.getDefaultConfig();
 	private GetAssetTimer getTimer = new GetAssetTimer();
 	private HeadAssetTimer headTimer = new HeadAssetTimer();
 
+	private Device getDevice() {
+		Device d = DeviceManager.getDevice(false);
+		if (d == null || !d.isRegistered()) {
+			d = DeviceManager.getDevice(true);
+		}
+		return d;
+	}
+	
 	public void execute(JobExecutionContext context) throws JobExecutionException {
-		for (TestCase tc : config.getTestCases()) {
-			if (config.getTrialsCount() > 0) {
-				TimerResult finalResult = runTrials(tc, getTimer);
-				if (!finalResult.isOutage()) {
-					TimerResult pingResults = runTrials(tc, headTimer);
-					if (pingResults.isOutage()) {
-						finalResult.setOutage(true);
-					} else {
-						finalResult.setPingDuration(pingResults.getDuration());
+		Device d = getDevice();
+		if (d != null && d.isRegistered()) {
+			DeviceConfiguration deviceConfig = DeviceManager.getCurrentConfig(true);
+			// TODO: update interval http://quartz-scheduler.org/documentation/quartz-2.x/cookbook/UpdateTrigger
+			List<TestCase> testCases = DeviceManager.getDeviceTestCases(true);
+			if (deviceConfig != null &&  testCases != null) {
+				for (TestCase tc : testCases) {
+					if (deviceConfig.getTrialsCount() > 0) {
+						TimerResult finalResult = runTrials(tc, getTimer, deviceConfig.getTrialsCount());
+						if (!finalResult.isOutage()) {
+							TimerResult pingResults = runTrials(tc, headTimer, deviceConfig.getTrialsCount());
+							if (pingResults.isOutage()) {
+								finalResult.setOutage(true);
+							} else {
+								finalResult.setPingDuration(pingResults.getDuration());
+							}
+						}
+						handleTimerResult(finalResult);
 					}
 				}
-				handleTimerResult(finalResult);
 			}
 		}
 	}
 	
-	private TimerResult runTrials(TestCase tc, AssetTimer timer) {
+	private TimerResult runTrials(TestCase tc, AssetTimer<?> timer, int trialsCount) {
 		List<Long> durations = Lists.newArrayList();
 		TimerResult finalResult = new TimerResult().setTestCaseId(tc.get_id());
-		for (int i=0;i<config.getTrialsCount();i++) {
+		for (int i=0;i<trialsCount;i++) {
 			TimerResult tempResult = timer.time(tc);
+			// TODO: check that result is valid ensuring that all data was downloaded
 			if (!tempResult.isOutage()) {				
 				durations.add(tempResult.getDuration());
 				finalResult.setStartTime(tempResult.getStartTime());
@@ -52,7 +67,6 @@ public class TestCaseRunner implements Job {
 			}
 		}
 		finalResult.setDuration((long)calcAvg(durations));
-		handleTimerResult(finalResult);
 		return finalResult;
 	}
 	

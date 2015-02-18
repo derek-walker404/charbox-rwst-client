@@ -9,20 +9,22 @@ import org.quartz.Trigger;
 import org.quartz.TriggerBuilder;
 import org.quartz.impl.StdSchedulerFactory;
 
+import com.pofof.conmon.model.DeviceConfiguration;
+import com.tpofof.conmon.client.config.DeviceManager;
 import com.tpofof.conmon.client.timer.TestCaseRunner;
 
 public class Main {
 	
 	public static void main(String[] args) {
-		ConmonConfig config = ConmonConfig.getDefaultConfig();
+		DeviceConfiguration deviceConfig = DeviceManager.getCurrentConfig(true);
 		Trigger testCaseRunnerTrigger = TriggerBuilder.newTrigger()
-				.withIdentity("testCaseRunnerTrigger", "testing")
+				.withIdentity("testCaseRunnerTrigger", "timers")
 				.withSchedule(SimpleScheduleBuilder.simpleSchedule()
-						.withIntervalInMinutes(config.getTestInterval())
+						.withIntervalInMinutes(deviceConfig.getTestInterval())
 						.repeatForever())
 				.build();
 		JobDetail job = JobBuilder.newJob(TestCaseRunner.class)
-				.withIdentity("testCaseRunner", "testing")
+				.withIdentity("testCaseRunner", "timers")
 				.build();
 		
 		try {
