@@ -15,6 +15,7 @@ public abstract class TimerResultHandler {
 		if (handlers == null) {
 			handlers = Lists.newArrayList();
 			handlers.add(new ConmonPushResultHandler());
+			handlers.add(new ConsoleReporterResultHandler());
 		}
 		return handlers;
 	}

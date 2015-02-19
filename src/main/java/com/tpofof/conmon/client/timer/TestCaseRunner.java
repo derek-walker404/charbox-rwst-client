@@ -56,6 +56,10 @@ public class TestCaseRunner implements Job {
 						}
 						finalResult.setServerIp(getIp(tc.getUri()));
 						finalResult.setDeviceId(Config.get().getInt(DEVICE_ID_KEY));
+						int speed = (finalResult.isOutage() || finalResult.getDuration() <= 0) 
+								? -1 
+								: (int)((double)finalResult.getSize() / 64.0 / finalResult.getDuration());
+						finalResult.setSpeed(speed);
 						for (TimerResultHandler handler : resultHandlers) {
 							handler.handle(finalResult);
 						}
@@ -85,6 +89,7 @@ public class TestCaseRunner implements Job {
 			// TODO: check that result is valid ensuring that all data was downloaded
 			if (!tempResult.isOutage()) {				
 				durations.add(tempResult.getDuration());
+				finalResult.setSize(tempResult.getSize());
 				finalResult.setStartTime(tempResult.getStartTime());
 			} else {
 				finalResult.setOutage(true);
