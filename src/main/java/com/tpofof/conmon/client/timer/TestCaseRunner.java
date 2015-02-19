@@ -1,5 +1,11 @@
 package com.tpofof.conmon.client.timer;
 
+import static com.tpofof.conmon.client.ApplicationSettings.DEVICE_ID_KEY;
+
+import java.net.InetAddress;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.List;
 
@@ -13,11 +19,14 @@ import com.pofof.conmon.model.DeviceConfiguration;
 import com.pofof.conmon.model.TestCase;
 import com.pofof.conmon.model.TimerResult;
 import com.tpofof.conmon.client.config.DeviceManager;
+import com.tpofof.conmon.client.timer.results.TimerResultHandler;
+import com.tpofof.utils.Config;
 
 public class TestCaseRunner implements Job {
 	
-	private GetAssetTimer getTimer = new GetAssetTimer();
-	private HeadAssetTimer headTimer = new HeadAssetTimer();
+	private final GetAssetTimer getTimer = new GetAssetTimer();
+	private final HeadAssetTimer headTimer = new HeadAssetTimer();
+	private final List<TimerResultHandler> resultHandlers = TimerResultHandler.getAll();
 
 	private Device getDevice() {
 		Device d = DeviceManager.getDevice(false);
@@ -45,11 +54,27 @@ public class TestCaseRunner implements Job {
 								finalResult.setPingDuration(pingResults.getDuration());
 							}
 						}
-						handleTimerResult(finalResult);
+						finalResult.setServerIp(getIp(tc.getUri()));
+						finalResult.setDeviceId(Config.get().getInt(DEVICE_ID_KEY));
+						for (TimerResultHandler handler : resultHandlers) {
+							handler.handle(finalResult);
+						}
 					}
 				}
 			}
 		}
+	}
+	
+	private String getIp(String assetLocation) {
+		String ip = null;
+		try {
+			ip = InetAddress.getByName(new URL(assetLocation).getHost()).getHostAddress();
+		} catch (UnknownHostException e) {
+			e.printStackTrace();
+		} catch (MalformedURLException e) {
+			e.printStackTrace();
+		}
+		return ip;
 	}
 	
 	private TimerResult runTrials(TestCase tc, AssetTimer<?> timer, int trialsCount) {
@@ -81,9 +106,5 @@ public class TestCaseRunner implements Job {
 			a += durations.get(i);
 		}
 		return a / end;
-	}
-	
-	public void handleTimerResult(TimerResult res) {
-		System.out.println(res);
 	}
 }

@@ -2,17 +2,15 @@ package com.tpofof.conmon.client.timer;
 
 import java.io.IOException;
 
-import org.apache.commons.httpclient.HttpClient;
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpMethodBase;
 
 import com.pofof.conmon.model.TestCase;
 import com.pofof.conmon.model.TimerResult;
+import com.tpofof.conmon.client.HttpClientProvider;
 
 public abstract class AssetTimer<HttpMethodT extends HttpMethodBase> {
 
-	private final HttpClient client = new HttpClient();
-	
 	protected abstract HttpMethodT getHttpMethod(String assetLocation);
 	
 	public TimerResult time(TestCase testCase) {
@@ -24,9 +22,10 @@ public abstract class AssetTimer<HttpMethodT extends HttpMethodBase> {
 			.setTestCaseId(testCase.get_id())
 			.setStartTime(System.currentTimeMillis());
 		try {
-			client.executeMethod(httpMethod);
+			HttpClientProvider.get().executeMethod(httpMethod);
 			long endTime = System.currentTimeMillis();
 			res.setDuration(endTime - res.getStartTime());
+			res.setSize(httpMethod.getResponseContentLength());
 			httpMethod.releaseConnection();
 			return res;
 		} catch (HttpException e) {

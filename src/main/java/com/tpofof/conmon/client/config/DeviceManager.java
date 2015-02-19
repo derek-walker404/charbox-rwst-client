@@ -1,5 +1,8 @@
 package com.tpofof.conmon.client.config;
 
+import static com.tpofof.conmon.client.ApplicationSettings.CONMON_SERVER_URL_KEY;
+import static com.tpofof.conmon.client.ApplicationSettings.DEVICE_ID_KEY;
+
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
@@ -16,9 +19,7 @@ import com.tpofof.utils.JsonUtils;
 
 public final class DeviceManager {
 
-	private static final String CONMON_SERVER_URL_KEY = "conmon.server.url";
-	private static final String DEVICE_ID_KEY = "device.id";
-	private static final String DEVICE_URL;
+	public static final String DEVICE_URL;
 	
 	static {
 		Config config = Config.get();
