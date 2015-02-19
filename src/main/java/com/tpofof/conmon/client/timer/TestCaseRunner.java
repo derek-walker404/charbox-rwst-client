@@ -56,10 +56,7 @@ public class TestCaseRunner implements Job {
 						}
 						finalResult.setServerIp(getIp(tc.getUri()));
 						finalResult.setDeviceId(Config.get().getInt(DEVICE_ID_KEY));
-						int speed = (finalResult.isOutage() || finalResult.getDuration() <= 0) 
-								? -1 
-								: (int)((double)finalResult.getSize() / 64.0 / finalResult.getDuration());
-						finalResult.setSpeed(speed);
+						finalResult.setSpeed(calcSpeed(finalResult));
 						for (TimerResultHandler handler : resultHandlers) {
 							handler.handle(finalResult);
 						}
@@ -67,6 +64,13 @@ public class TestCaseRunner implements Job {
 				}
 			}
 		}
+	}
+	
+	private double calcSpeed(TimerResult result) {
+		double speed = (result.isOutage() || result.getDuration() <= 0) 
+				? -1 
+				: (result.getSize() * 8.0 / 1048.576 / result.getDuration()); // do I need to multiple by 8 here? math don't work now. comm bak laytur, da nomburs luk gud doh
+		return speed;
 	}
 	
 	private String getIp(String assetLocation) {

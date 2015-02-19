@@ -18,6 +18,7 @@ public abstract class AssetTimer<HttpMethodT extends HttpMethodBase> {
 			throw new IllegalArgumentException("Test case cannot be null");
 		}
 		HttpMethodT httpMethod = getHttpMethod(testCase.getUri());
+		httpMethod.addRequestHeader("Cache-Control", "no-cache");
 		TimerResult res = new TimerResult()
 			.setTestCaseId(testCase.get_id())
 			.setStartTime(System.currentTimeMillis());
