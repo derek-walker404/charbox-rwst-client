@@ -18,6 +18,7 @@ import com.pofof.conmon.model.Device;
 import com.pofof.conmon.model.DeviceConfiguration;
 import com.pofof.conmon.model.TestCase;
 import com.pofof.conmon.model.TimerResult;
+import com.tpofof.conmon.client.ClientIpProvider;
 import com.tpofof.conmon.client.config.DeviceManager;
 import com.tpofof.conmon.client.timer.results.TimerResultHandler;
 import com.tpofof.utils.Config;
@@ -57,6 +58,7 @@ public class TestCaseRunner implements Job {
 						finalResult.setServerIp(getIp(tc.getUri()));
 						finalResult.setDeviceId(Config.get().getInt(DEVICE_ID_KEY));
 						finalResult.setSpeed(calcSpeed(finalResult));
+						finalResult.setClientIp(ClientIpProvider.getIp());
 						for (TimerResultHandler handler : resultHandlers) {
 							handler.handle(finalResult);
 						}
