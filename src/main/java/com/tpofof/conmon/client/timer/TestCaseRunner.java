@@ -55,10 +55,10 @@ public class TestCaseRunner implements Job {
 								finalResult.setPingDuration(pingResults.getDuration());
 							}
 						}
-						finalResult.setServerIp(getIp(tc.getUri()));
+						finalResult.getServerLocation().setIp(getIp(tc.getUri()));
 						finalResult.setDeviceId(Config.get().getInt(DEVICE_ID_KEY));
 						finalResult.setSpeed(calcSpeed(finalResult));
-						finalResult.setClientIp(ClientIpProvider.getIp());
+						finalResult.getClientLocation().setIp(ClientIpProvider.getIp());
 						for (TimerResultHandler handler : resultHandlers) {
 							handler.handle(finalResult);
 						}
