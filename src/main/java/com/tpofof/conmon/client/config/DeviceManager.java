@@ -9,6 +9,7 @@ import java.util.List;
 
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.methods.GetMethod;
+import org.apache.commons.httpclient.methods.PostMethod;
 
 import com.pofof.conmon.model.Device;
 import com.pofof.conmon.model.DeviceConfiguration;
@@ -54,7 +55,7 @@ public final class DeviceManager {
 	private static Device registerDevice() {
 		Device device = null;
 		String deviceUrl = DEVICE_URL + "/register";
-		GetMethod gm = new GetMethod(deviceUrl);
+		PostMethod gm = new PostMethod(deviceUrl);
 		try {
 			HttpClientProvider.get().executeMethod(gm);
 			currentDevice = JsonUtils.fromJsonResponse(gm.getResponseBodyAsString(), Device.class);
