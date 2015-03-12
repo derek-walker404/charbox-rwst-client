@@ -14,7 +14,7 @@ public abstract class TimerResultHandler {
 	public static List<TimerResultHandler> getAll() {
 		if (handlers == null) {
 			handlers = Lists.newArrayList();
-//			handlers.add(new ConmonPushResultHandler());
+			handlers.add(new ConmonPushResultHandler());
 			handlers.add(new ConsoleReporterResultHandler());
 		}
 		return handlers;
