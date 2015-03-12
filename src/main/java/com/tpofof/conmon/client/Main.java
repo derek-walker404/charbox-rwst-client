@@ -1,38 +1,34 @@
 package com.tpofof.conmon.client;
 
-import org.quartz.JobBuilder;
-import org.quartz.JobDetail;
-import org.quartz.Scheduler;
-import org.quartz.SchedulerException;
-import org.quartz.SimpleScheduleBuilder;
-import org.quartz.Trigger;
-import org.quartz.TriggerBuilder;
-import org.quartz.impl.StdSchedulerFactory;
+import java.io.File;
+import java.util.List;
 
 import com.pofof.conmon.model.DeviceConfiguration;
-import com.tpofof.conmon.client.config.DeviceManager;
+import com.pofof.conmon.model.TestCase;
 import com.tpofof.conmon.client.timer.TestCaseRunner;
+import com.tpofof.utils.JsonUtils;
 
 public class Main {
 	
+	private static void execute(String deviceConfigFilename, String tcFilename) {
+		TestCaseRunner runner = new TestCaseRunner();
+		File deviceConfigFile = new File(deviceConfigFilename);
+		File tcFile = new File(tcFilename);
+		if (deviceConfigFile.exists() && tcFile.exists()) {
+			DeviceConfiguration deviceConfig = JsonUtils.fromJson(deviceConfigFile, DeviceConfiguration.class);
+			String jsonContent = JsonUtils.fromJson(tcFile).toString();
+			List<TestCase> tcs = JsonUtils.fromJsonList(jsonContent, TestCase.class);
+			for (TestCase tc : tcs) {
+				runner.run(deviceConfig, tc);
+			}
+		}
+	}
+	
 	public static void main(String[] args) {
-		DeviceConfiguration deviceConfig = DeviceManager.getCurrentConfig(true);
-		Trigger testCaseRunnerTrigger = TriggerBuilder.newTrigger()
-				.withIdentity("testCaseRunnerTrigger", "timers")
-				.withSchedule(SimpleScheduleBuilder.simpleSchedule()
-						.withIntervalInMinutes(deviceConfig.getTestInterval())
-						.repeatForever())
-				.build();
-		JobDetail job = JobBuilder.newJob(TestCaseRunner.class)
-				.withIdentity("testCaseRunner", "timers")
-				.build();
-		
-		try {
-			Scheduler scheduler = new StdSchedulerFactory().getScheduler();
-			scheduler.start();
-			scheduler.scheduleJob(job, testCaseRunnerTrigger);
-		} catch (SchedulerException e) {
-			e.printStackTrace();
+		if (args.length == 2) {
+			execute(args[0], args[1]);
+		} else {
+			System.err.println("Required parameters:\n\t0: Device Configuration Filename\n\t1: Test Cases Filename");
 		}
 	}
 }

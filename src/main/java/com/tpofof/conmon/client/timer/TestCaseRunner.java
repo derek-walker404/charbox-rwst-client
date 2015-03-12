@@ -9,61 +9,37 @@ import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.List;
 
-import org.quartz.Job;
-import org.quartz.JobExecutionContext;
-import org.quartz.JobExecutionException;
-
 import com.google.common.collect.Lists;
-import com.pofof.conmon.model.Device;
 import com.pofof.conmon.model.DeviceConfiguration;
 import com.pofof.conmon.model.TestCase;
 import com.pofof.conmon.model.TimerResult;
 import com.tpofof.conmon.client.ClientIpProvider;
-import com.tpofof.conmon.client.config.DeviceManager;
 import com.tpofof.conmon.client.timer.results.TimerResultHandler;
 import com.tpofof.utils.Config;
 
-public class TestCaseRunner implements Job {
+public class TestCaseRunner {
 	
 	private final GetAssetTimer getTimer = new GetAssetTimer();
 	private final HeadAssetTimer headTimer = new HeadAssetTimer();
 	private final List<TimerResultHandler> resultHandlers = TimerResultHandler.getAll();
 
-	private Device getDevice() {
-		Device d = DeviceManager.getDevice(false);
-		if (d == null || !d.isRegistered()) {
-			d = DeviceManager.getDevice(true);
-		}
-		return d;
-	}
-	
-	public void execute(JobExecutionContext context) throws JobExecutionException {
-		Device d = getDevice();
-		if (d != null && d.isRegistered()) {
-			DeviceConfiguration deviceConfig = DeviceManager.getCurrentConfig(true);
-			// TODO: update interval http://quartz-scheduler.org/documentation/quartz-2.x/cookbook/UpdateTrigger
-			List<TestCase> testCases = DeviceManager.getDeviceTestCases(true);
-			if (deviceConfig != null &&  testCases != null) {
-				for (TestCase tc : testCases) {
-					if (deviceConfig.getTrialsCount() > 0) {
-						TimerResult finalResult = runTrials(tc, getTimer, deviceConfig.getTrialsCount());
-						if (!finalResult.isOutage()) {
-							TimerResult pingResults = runTrials(tc, headTimer, deviceConfig.getTrialsCount());
-							if (pingResults.isOutage()) {
-								finalResult.setOutage(true);
-							} else {
-								finalResult.setPingDuration(pingResults.getDuration());
-							}
-						}
-						finalResult.getServerLocation().setIp(getIp(tc.getUri()));
-						finalResult.setDeviceId(Config.get().getInt(DEVICE_ID_KEY));
-						finalResult.setSpeed(calcSpeed(finalResult));
-						finalResult.getClientLocation().setIp(ClientIpProvider.getIp());
-						for (TimerResultHandler handler : resultHandlers) {
-							handler.handle(finalResult);
-						}
-					}
+	public void run(DeviceConfiguration deviceConfig, TestCase tc) {
+		if (deviceConfig.getTrialsCount() > 0) {
+			TimerResult finalResult = runTrials(tc, getTimer, deviceConfig.getTrialsCount());
+			if (!finalResult.isOutage()) {
+				TimerResult pingResults = runTrials(tc, headTimer, deviceConfig.getTrialsCount());
+				if (pingResults.isOutage()) {
+					finalResult.setOutage(true);
+				} else {
+					finalResult.setPingDuration(pingResults.getDuration());
 				}
+			}
+			finalResult.getServerLocation().setIp(getIp(tc.getUri()));
+			finalResult.setDeviceId(Config.get().getInt(DEVICE_ID_KEY));
+			finalResult.setSpeed(calcSpeed(finalResult));
+			finalResult.getClientLocation().setIp(ClientIpProvider.getIp());
+			for (TimerResultHandler handler : resultHandlers) {
+				handler.handle(finalResult);
 			}
 		}
 	}
