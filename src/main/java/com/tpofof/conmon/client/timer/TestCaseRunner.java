@@ -26,6 +26,7 @@ public class TestCaseRunner {
 	public void run(DeviceConfiguration deviceConfig, TestCase tc) {
 		if (deviceConfig.getTrialsCount() > 0) {
 			TimerResult finalResult = runTrials(tc, getTimer, deviceConfig.getTrialsCount());
+			finalResult.setOutage(finalResult.isOutage() || finalResult.getSize() <= 0);
 			if (!finalResult.isOutage()) {
 				TimerResult pingResults = runTrials(tc, headTimer, deviceConfig.getTrialsCount());
 				if (pingResults.isOutage()) {
