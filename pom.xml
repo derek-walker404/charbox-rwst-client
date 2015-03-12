@@ -41,5 +41,10 @@
 			<artifactId>commons-httpclient</artifactId>
 			<version>3.1</version>
 		</dependency>
+		<dependency>
+	        <groupId>org.seleniumhq.selenium</groupId>
+	        <artifactId>selenium-server</artifactId>
+	        <version>2.45.0</version>
+	    </dependency>
 	</dependencies>
 </project>
