@@ -11,6 +11,7 @@ import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import com.pofof.conmon.model.Device;
 import com.pofof.conmon.model.DeviceConfiguration;
 import com.pofof.conmon.model.TestCase;
@@ -143,5 +144,21 @@ public final class DeviceManager {
 			}
 		}
 		return currentTestCases;
+	}
+	
+	public static boolean heartbeat() {
+		String testCasesUrl = DEVICE_URL + "/hb";
+		PostMethod gm = new PostMethod(testCasesUrl);
+		try {
+			int statusCode = HttpClientProvider.get().executeMethod(gm);
+			JsonNode response = JsonUtils.parse(gm.getResponseBodyAsString());
+			gm.releaseConnection();
+			return statusCode == 200 && response != null && response.has("success") && response.get("success").asBoolean();
+		} catch (HttpException e) {
+			e.printStackTrace();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return false;
 	}
 }
