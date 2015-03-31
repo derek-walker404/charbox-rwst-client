@@ -2,7 +2,7 @@ package com.tpofof.conmon.client.heartbeat;
 
 import com.tpofof.conmon.client.config.DeviceManager;
 
-public class Main {
+public class HeartbeatMain {
 
 	public static void main(String[] args) {
 		if (DeviceManager.heartbeat()) {
