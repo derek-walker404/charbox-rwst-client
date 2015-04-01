@@ -1,9 +1,10 @@
-package com.tpofof.conmon.client.timer.results;
+package co.charbox.rwsp.timer.results;
 
 import java.util.List;
 
+import co.charbox.domain.model.TimerResult;
+
 import com.google.common.collect.Lists;
-import com.pofof.conmon.model.TimerResult;
 
 public abstract class TimerResultHandler {
 

@@ -1,13 +1,13 @@
-package com.tpofof.conmon.client.timer;
+package co.charbox.rwsp.timer;
 
 import java.io.IOException;
 
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.HttpMethodBase;
 
-import com.pofof.conmon.model.TestCase;
-import com.pofof.conmon.model.TimerResult;
-import com.tpofof.conmon.client.HttpClientProvider;
+import co.charbox.domain.model.TestCase;
+import co.charbox.domain.model.TimerResult;
+import co.charbox.rwsp.HttpClientProvider;
 
 public abstract class AssetTimer<HttpMethodT extends HttpMethodBase> {
 

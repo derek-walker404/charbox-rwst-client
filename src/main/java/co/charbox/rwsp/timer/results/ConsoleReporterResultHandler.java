@@ -1,7 +1,7 @@
-package com.tpofof.conmon.client.timer.results;
+package co.charbox.rwsp.timer.results;
 
-import com.pofof.conmon.model.TimerResult;
-import com.tpofof.utils.JsonUtils;
+import co.charbox.core.utils.JsonUtils;
+import co.charbox.domain.model.TimerResult;
 
 public class ConsoleReporterResultHandler extends TimerResultHandler {
 

@@ -1,6 +1,6 @@
-package com.tpofof.conmon.client.timer.results;
+package co.charbox.rwsp.timer.results;
 
-import static com.tpofof.conmon.client.ApplicationSettings.CONMON_SERVER_URL_KEY;
+import static co.charbox.rwsp.ApplicationSettings.CONMON_SERVER_URL_KEY;
 
 import org.apache.commons.httpclient.methods.PostMethod;
 import org.apache.commons.httpclient.methods.RequestEntity;
@@ -8,10 +8,10 @@ import org.apache.commons.httpclient.methods.StringRequestEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.pofof.conmon.model.TimerResult;
-import com.tpofof.conmon.client.HttpClientProvider;
-import com.tpofof.utils.Config;
-import com.tpofof.utils.JsonUtils;
+import co.charbox.core.utils.Config;
+import co.charbox.core.utils.JsonUtils;
+import co.charbox.domain.model.TimerResult;
+import co.charbox.rwsp.HttpClientProvider;
 
 public class ConmonPushResultHandler extends TimerResultHandler {
 

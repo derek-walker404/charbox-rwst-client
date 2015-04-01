@@ -1,14 +1,14 @@
-package com.tpofof.conmon.client;
+package co.charbox.rwsp;
 
-import static com.tpofof.conmon.client.ApplicationSettings.IP_SERVICE_URL;
+import static co.charbox.rwsp.ApplicationSettings.IP_SERVICE_URL;
 
 import java.io.IOException;
 
 import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.methods.GetMethod;
 
-import com.tpofof.utils.Config;
-import com.tpofof.utils.JsonUtils;
+import co.charbox.core.utils.Config;
+import co.charbox.core.utils.JsonUtils;
 
 public final class ClientIpProvider {
 

@@ -1,6 +1,6 @@
-package com.tpofof.conmon.client.heartbeat;
+package co.charbox.rwsp.heartbeat;
 
-import com.tpofof.conmon.client.config.DeviceManager;
+import co.charbox.rwsp.config.DeviceManager;
 
 public class HeartbeatMain {
 

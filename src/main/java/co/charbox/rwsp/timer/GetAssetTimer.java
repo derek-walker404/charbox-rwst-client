@@ -1,4 +1,4 @@
-package com.tpofof.conmon.client.timer;
+package co.charbox.rwsp.timer;
 
 import org.apache.commons.httpclient.methods.GetMethod;
 

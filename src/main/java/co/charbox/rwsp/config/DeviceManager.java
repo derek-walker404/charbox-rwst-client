@@ -1,7 +1,7 @@
-package com.tpofof.conmon.client.config;
+package co.charbox.rwsp.config;
 
-import static com.tpofof.conmon.client.ApplicationSettings.CONMON_SERVER_URL_KEY;
-import static com.tpofof.conmon.client.ApplicationSettings.DEVICE_ID_KEY;
+import static co.charbox.rwsp.ApplicationSettings.CONMON_SERVER_URL_KEY;
+import static co.charbox.rwsp.ApplicationSettings.DEVICE_ID_KEY;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,13 +11,14 @@ import org.apache.commons.httpclient.HttpException;
 import org.apache.commons.httpclient.methods.GetMethod;
 import org.apache.commons.httpclient.methods.PostMethod;
 
+import co.charbox.core.utils.Config;
+import co.charbox.core.utils.JsonUtils;
+import co.charbox.domain.model.Device;
+import co.charbox.domain.model.DeviceConfiguration;
+import co.charbox.domain.model.TestCase;
+import co.charbox.rwsp.HttpClientProvider;
+
 import com.fasterxml.jackson.databind.JsonNode;
-import com.pofof.conmon.model.Device;
-import com.pofof.conmon.model.DeviceConfiguration;
-import com.pofof.conmon.model.TestCase;
-import com.tpofof.conmon.client.HttpClientProvider;
-import com.tpofof.utils.Config;
-import com.tpofof.utils.JsonUtils;
 
 public final class DeviceManager {
 

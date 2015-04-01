@@ -1,6 +1,6 @@
-package com.tpofof.conmon.client.timer;
+package co.charbox.rwsp.timer;
 
-import static com.tpofof.conmon.client.ApplicationSettings.DEVICE_ID_KEY;
+import static co.charbox.rwsp.ApplicationSettings.DEVICE_ID_KEY;
 
 import java.net.InetAddress;
 import java.net.MalformedURLException;
@@ -9,13 +9,14 @@ import java.net.UnknownHostException;
 import java.util.Collections;
 import java.util.List;
 
+import co.charbox.core.utils.Config;
+import co.charbox.domain.model.DeviceConfiguration;
+import co.charbox.domain.model.TestCase;
+import co.charbox.domain.model.TimerResult;
+import co.charbox.rwsp.ClientIpProvider;
+import co.charbox.rwsp.timer.results.TimerResultHandler;
+
 import com.google.common.collect.Lists;
-import com.pofof.conmon.model.DeviceConfiguration;
-import com.pofof.conmon.model.TestCase;
-import com.pofof.conmon.model.TimerResult;
-import com.tpofof.conmon.client.ClientIpProvider;
-import com.tpofof.conmon.client.timer.results.TimerResultHandler;
-import com.tpofof.utils.Config;
 
 public class TestCaseRunner {
 	

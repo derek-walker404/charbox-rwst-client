@@ -1,4 +1,4 @@
-package com.tpofof.conmon.client.har;
+package co.charbox.rwsp.har;
 
 import java.io.File;
 import java.io.IOException;

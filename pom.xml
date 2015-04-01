@@ -1,10 +1,10 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
-	<groupId>com.tpofof</groupId>
-	<artifactId>conmon-client</artifactId>
-	<version>0.1.1</version>
-	<name>Maven Test</name>
+	<groupId>co.charbox</groupId>
+	<artifactId>rwsp</artifactId>
+	<version>0.1.0</version>
+	<name>Charbox - Real World Speed Test</name>
 	<dependencies>
 		<dependency>
 			<groupId>com.google.guava</groupId>
@@ -27,13 +27,13 @@
 			<version>2.3.3</version>
 		</dependency>
 		<dependency>
-			<groupId>com.tpofof</groupId>
-			<artifactId>tpofof-core</artifactId>
+			<groupId>co.charbox</groupId>
+			<artifactId>core</artifactId>
 			<version>0.1.0</version>
 		</dependency>
 		<dependency>
-			<groupId>com.tpofof</groupId>
-			<artifactId>tpofof-conmon</artifactId>
+			<groupId>co.charbox</groupId>
+			<artifactId>domain</artifactId>
 			<version>0.1.0</version>
 		</dependency>
 		<dependency>

@@ -1,6 +1,6 @@
-package com.tpofof.conmon.client;
+package co.charbox.rwsp;
 
-import com.tpofof.conmon.client.heartbeat.HeartbeatMain;
+import co.charbox.rwsp.heartbeat.HeartbeatMain;
 
 public class Main {
 

@@ -1,13 +1,13 @@
-package com.tpofof.conmon.client;
+package co.charbox.rwsp;
 
 import java.io.File;
 import java.util.List;
 
-import com.pofof.conmon.model.DeviceConfiguration;
-import com.pofof.conmon.model.TestCase;
-import com.tpofof.conmon.client.config.DeviceManager;
-import com.tpofof.conmon.client.timer.TestCaseRunner;
-import com.tpofof.utils.JsonUtils;
+import co.charbox.core.utils.JsonUtils;
+import co.charbox.domain.model.DeviceConfiguration;
+import co.charbox.domain.model.TestCase;
+import co.charbox.rwsp.config.DeviceManager;
+import co.charbox.rwsp.timer.TestCaseRunner;
 
 public class TimerMain {
 	

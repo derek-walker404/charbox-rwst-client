@@ -1,4 +1,4 @@
-package com.tpofof.conmon.client;
+package co.charbox.rwsp;
 
 import java.util.Map;
 
