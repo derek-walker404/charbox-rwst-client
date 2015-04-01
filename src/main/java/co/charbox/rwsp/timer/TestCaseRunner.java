@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.List;
 
 import co.charbox.core.utils.Config;
+import co.charbox.core.utils.SpeedUtils;
 import co.charbox.domain.model.DeviceConfiguration;
 import co.charbox.domain.model.TestCase;
 import co.charbox.domain.model.TimerResult;
@@ -38,19 +39,12 @@ public class TestCaseRunner {
 			}
 			finalResult.getServerLocation().setIp(getIp(tc.getUri()));
 			finalResult.setDeviceId(Config.get().getInt(DEVICE_ID_KEY));
-			finalResult.setSpeed(calcSpeed(finalResult));
+			finalResult.setSpeed(SpeedUtils.calcSpeed(finalResult.getDuration(), finalResult.getSize()));
 			finalResult.getClientLocation().setIp(ClientIpProvider.getIp());
 			for (TimerResultHandler handler : resultHandlers) {
 				handler.handle(finalResult);
 			}
 		}
-	}
-	
-	private double calcSpeed(TimerResult result) {
-		double speed = (result.isOutage() || result.getDuration() <= 0) 
-				? -1 
-				: (result.getSize() * 8.0 / 1048.576 / result.getDuration()); // do I need to multiple by 8 here? math don't work now. comm bak laytur, da nomburs luk gud doh
-		return speed;
 	}
 	
 	private String getIp(String assetLocation) {
